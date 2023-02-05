@@ -10,7 +10,7 @@ packer {
       version = ">= 1.1.6"
     }
     googlecompute = {
-      source = "github.com/hashicorp/googlecompute"
+      source  = "github.com/hashicorp/googlecompute"
       version = ">= 1.1.0"
     }
   }
@@ -21,9 +21,9 @@ locals {
 }
 
 source "azure-arm" "ubuntu-lts" {
-  client_id                         = var.arm_client_id
-  client_secret                     = var.arm_client_secret
-  subscription_id                   = var.arm_subscription_id
+  client_id       = var.arm_client_id
+  client_secret   = var.arm_client_secret
+  subscription_id = var.arm_subscription_id
 
   os_type         = var.cloudConfig["azure"].os_type
   image_offer     = var.cloudConfig["azure"].image_offer
@@ -65,9 +65,9 @@ source "googlecompute" "ubuntu-lts" {
 
   source_image = var.cloudConfig["gcp"].source_image
   ssh_username = var.ssh_username
-  zone = var.cloudConfig["gcp"].zone
+  zone         = var.cloudConfig["gcp"].zone
   machine_type = var.cloudConfig["gcp"].machine_type
-  image_name = "${var.imageSuffix}-${local.date}"
+  image_name   = "${var.imageSuffix}-${local.date}"
 
   image_labels = var.tags
 }
@@ -85,19 +85,6 @@ build {
 
   sources = ["sources.googlecompute.ubuntu-lts"]
 
-  # systemd unit for HashiCups service
-  /*provisioner "file" {
-    source      = "hashicups.service"
-    destination = "/tmp/hashicups.service"
-  }
-
-  # Set up HashiCups
-  provisioner "shell" {
-    scripts = [
-      "setup-deps-hashicups.sh"
-    ]
-  }*/
-
   # HCP Packer settings
   hcp_packer_registry {
     bucket_name = "multicloud-hashitalks"
@@ -105,7 +92,8 @@ build {
 
     bucket_labels = {
       "Project" = "multicloud-hashitalks",
-      "Owner" = "Marcelo",
+      "Owner"   = "Marcelo",
+      "version" = "2"
     }
   }
 
